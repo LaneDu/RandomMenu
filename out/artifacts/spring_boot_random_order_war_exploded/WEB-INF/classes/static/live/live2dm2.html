@@ -1,0 +1,43 @@
+
+<!DOCTYPE html><!--声明为HTML5文档-->
+<html>
+<head>
+<meta charset="utf-8"><!--对于中文网页需要声明编码，否则会出现乱码。-->
+<title>Live2D 宠物</title>
+<style>
+@media (max-width: 768px) {
+	#waifu {
+		display:block !important;
+	}
+}
+</style>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+</head>
+<body>
+
+	<!--博客宠物-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+<!-- 	<script src="https://cdn.jsdelivr.net/gh/lanedu/live2d-widget@v1.1/autoload.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/gh/lanedu/live2d-widget@master/v3/autoload.js"></script>
+ 
+	<script>
+		if (screen.width >= 100) {
+			Promise.all([
+				loadExternalResource(live2d_path + "waifu.css", "css"),
+				loadExternalResource(live2d_path + "live2d.min.js", "js"),
+				loadExternalResource(live2d_path + "waifu-tips.js", "js")
+			]).then(() => {
+				initWidget({
+					waifuPath: live2d_path + "waifu-tips.json",
+					apiPath: "https://live2d.fghrsh.net/api/",
+					//cdnPath: "https://cdn.jsdelivr.net/gh/fghrsh/live2d_api/"
+				});
+			});
+		}
+	</script>
+<!-- 限制一个ip只能有一个 -->
+<script src="https://myhkw.cn/api/player/demo" id="myhk" key="demo" m="1"></script>
+
+
+</body>
+</html>

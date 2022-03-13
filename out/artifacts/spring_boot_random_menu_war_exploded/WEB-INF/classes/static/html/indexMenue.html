@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <title>上蝶随机点菜系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="stylesheet" href="../jssdk/sdk.css" />
+    <link rel="stylesheet" href="../jssdk/helper.css" />
+    <link rel="stylesheet" href="../jssdk/iconfont.css" />
+    <!-- 这是默认主题所需的，如果是其他主题则不需要 -->
+    <!-- 从 1.1.0 开始 sdk.css 将不支持 IE 11，如果要支持 IE11 请引用这个 css，并把前面那个删了 -->
+    <!-- <link rel="stylesheet" href="sdk-ie11.css" /> -->
+    <!-- 不过 amis 开发团队几乎没测试过 IE 11 下的效果，所以可能有细节功能用不了，如果发现请报 issue -->
+    <style>
+        html,
+        body,
+        .app-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="root" class="app-wrapper"></div>
+<script src="../jssdk/sdk.js"></script>
+<script type="text/javascript">
+    (function () {
+        let amis = amisRequire('amis/embed');
+        // 通过替换下面这个配置来生成不同页面
+        let amisJSON = {
+            type: 'page',
+            title: '上蝶随机点菜系统',
+            body: {
+                "type": "page",
+                "title": "",
+                "aside": [
+                    {
+                        "type": "nav",
+                        "stacked": true,
+                        "links": [
+                            {
+                                "label": "餐厅列表",
+                                "to": "index?id=1",
+                                "icon": "fa fa-stack-exchange",
+                                "active": ""
+                            },
+                            {
+                                "label": "菜单列表",
+                                "to": "indexMenue?rid=0",
+                                "icon": "fa fa-soundcloud"
+                            },
+                            {
+                                "label": "亿家小厨",
+                                "to": "indexMenue?rid=1",
+                                "icon": "fa fa-slideshare",
+                                "active": ""
+                            },
+                            {
+                                "label": "滋补烩面",
+                                "to": "indexMenue?rid=2",
+                                "icon": "fa fa-spotify"
+                            }
+                        ]
+                    }
+                ],
+                "messages": {},
+                "style": {
+                    "color": "",
+                    "fontSize": "",
+                    "fontWeight": "normal"
+                },
+                "body": [
+                    {
+                        "type": "tpl",
+                        "tpl": "菜单列表",
+                        "inline": false,
+                        "style": {}
+                    },
+                    {
+                        "type": "divider"
+                    },
+                    {
+                        "type": "crud",
+                        "api": "../menu/selectList?rid=${rid}",
+                        "columns": [
+                            {
+                                "name": "id",
+                                "label": "ID",
+                                "type": "text"
+                            },
+                            {
+                                "name": "name",
+                                "label": "名称",
+                                "type": "text"
+                            },
+                            {
+                                "name": "type",
+                                "label": "类型",
+                                "type": "text",
+                                "sortable": true
+                            },
+                            {
+                                "type": "text",
+                                "label": "价格",
+                                "name": "price",
+                                "sortable": true
+                            },
+                            {
+                                "type": "text",
+                                "label": "餐厅ID",
+                                "name": "rid",
+                                "sortable": true
+                            },
+                            {
+                                "type": "operation",
+                                "label": "操作",
+                                "buttons": [
+                                    {
+                                        "label": "编辑",
+                                        "type": "button",
+                                        "actionType": "dialog",
+                                        "level": "link",
+                                        "dialog": {
+                                            "title": "编辑",
+                                            "body": {
+                                                "type": "form",
+                                                "api": "post:../menu/update",
+                                                "body": [
+                                                    {
+                                                        "name": "id",
+                                                        "label": "ID",
+                                                        "type": "input-text"
+                                                    },
+                                                    {
+                                                        "name": "name",
+                                                        "label": "名称",
+                                                        "type": "input-text"
+                                                    },
+                                                    {
+                                                        "label": "价格",
+                                                        "name": "price",
+                                                        "type": "native-number"
+                                                    },
+                                                    {
+                                                        "label": "类型",
+                                                        "name": "type",
+                                                        "type": "input-text"
+                                                    },
+                                                    {
+                                                        "label": "餐厅ID",
+                                                        "name": "rid",
+                                                        "type": "static"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "label": "查看",
+                                        "type": "button",
+                                        "actionType": "dialog",
+                                        "level": "link",
+                                        "dialog": {
+                                            "title": "查看详情",
+                                            "body": {
+                                                "type": "form",
+                                                "api": "post:../menu/update",
+                                                "body": [
+                                                    {
+                                                        "name": "id",
+                                                        "label": "ID",
+                                                        "type": "static"
+                                                    },
+                                                    {
+                                                        "name": "name",
+                                                        "label": "名称",
+                                                        "type": "static"
+                                                    },
+                                                    {
+                                                        "name": "type",
+                                                        "label": "类型",
+                                                        "type": "static"
+                                                    },
+                                                    {
+                                                        "label": "价格",
+                                                        "name": "price",
+                                                        "type": "static"
+                                                    },
+                                                    {
+                                                        "label": "餐厅ID",
+                                                        "name": "rid",
+                                                        "type": "static"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }/*,
+                                    {
+                                        "type": "button",
+                                        "label": "删除",
+                                        "actionType": "ajax",
+                                        "level": "link",
+                                        "className": "text-danger",
+                                        "confirmText": "确定要删除？",
+                                        "api": "post:../menu/delete",
+                                    }*/
+                                ]
+                            }
+                        ],
+                        "bulkActions": [],
+                        "itemActions": [],
+                        "features": [
+                            "create",
+                            "filter",
+                            "view",
+                            "delete"
+                        ],
+                        "headerToolbar": [
+                            {
+                                "label": "新增",
+                                "type": "button",
+                                "actionType": "dialog",
+                                "className": "menu",
+                                "level": "primary",
+                                "dialog": {
+                                    "title": "新增",
+                                    "body": {
+                                        "type": "form",
+                                        "method": "post",
+                                        "api": "../menu/insert",
+                                        "body": [
+                                            // {
+                                            //     "type": "input-text",
+                                            //     "name": "id",
+                                            //     "label": "ID"
+                                            // },
+                                            {
+                                                "type": "input-text",
+                                                "name": "name",
+                                                "label": "名称"
+                                            },
+                                            {
+                                                "type": "input-text",
+                                                "name": "type",
+                                                "placeholder":"肉、素、蛋、汤",
+                                                "label": "类型"
+                                            },
+                                            {
+                                                "type": "native-number",
+                                                "name": "price",
+                                                "label": "价格"
+                                            },
+                                            {
+                                                "label": "餐厅ID",
+                                                "name": "rid",
+                                                "type": "input-text"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "size": "md"
+                            },
+                            "bulkActions",
+                            "pagination"
+                        ]
+                    }
+                ]
+            }
+        };
+        let amisScoped = amis.embed('#root', amisJSON);
+    })();
+</script>
+</body>
+</html>

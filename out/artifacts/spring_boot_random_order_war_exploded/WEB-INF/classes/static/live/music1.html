@@ -1,0 +1,34 @@
+
+<!DOCTYPE html><!--声明为HTML5文档-->
+<html>
+<head>
+<meta charset="utf-8"><!--对于中文网页需要声明编码，否则会出现乱码。-->
+<title>music1</title>
+<style>
+@media (max-width: 768px) {
+	#waifu {
+		display:block !important;
+	}
+}
+</style>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+</head>
+<body>
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+<!-- <script src="https://myhkw.cn/api/player/demo" id="myhk" key="demo" m="1"></script> -->
+<!--音乐播放器，如果不需要删除以下几行即可,id是网页版网易云歌单id -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1/dist/APlayer.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/aplayer@1/dist/APlayer.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+	<meting-js id="608603475" server="netease" type="playlist" theme="#339981" fixed="true"
+	preload="auto" autoplay="false" loop="all" order="random" volume="0.3"></meting-js>
+	<!--meting-js参数设置详见https://github.com/metowolf/MetingJS#option-->
+
+</body>
+</html>

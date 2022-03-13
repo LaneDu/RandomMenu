@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <title>上蝶随机点菜系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="stylesheet" href="../jssdk/sdk.css" />
+<!--    <link rel="stylesheet" href="../jssdk/antd.css" />-->
+    <link rel="stylesheet" href="../jssdk/helper.css" />
+    <link rel="stylesheet" href="../jssdk/iconfont.css" />
+    <!-- 这是默认主题所需的，如果是其他主题则不需要 -->
+    <!-- 从 1.1.0 开始 sdk.css 将不支持 IE 11，如果要支持 IE11 请引用这个 css，并把前面那个删了 -->
+    <!-- <link rel="stylesheet" href="sdk-ie11.css" /> -->
+    <!-- 不过 amis 开发团队几乎没测试过 IE 11 下的效果，所以可能有细节功能用不了，如果发现请报 issue -->
+    <style>
+        html,
+        body,
+        .app-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="root" class="app-wrapper"></div>
+<script src="../jssdk/sdk.js"></script>
+<script type="text/javascript">
+    (function () {
+        let amis = amisRequire('amis/embed');
+        // 通过替换下面这个配置来生成不同页面
+        let amisJSON = {
+            type: 'page',
+            title: '随机点菜系统',
+            body: {
+                "type": "page",
+                "title": "",
+                "aside": [
+                    {
+                        "type": "nav",
+                        "stacked": true,
+                        "links": [
+                            {
+                                "label": "餐厅列表",
+                                "to": "index?id=0",
+                                "icon": "fa fa-stack-exchange",
+                                "active": ""
+                            },
+                            {
+                                "label": "菜单列表",
+                                "to": "indexMenue?rid=0",
+                                "icon": "fa fa-soundcloud"
+                            },
+
+                            {
+                                "label": "亿家小厨",
+                                "to": "indexMenue?rid=1",
+                                "icon": "fa fa-slideshare",
+                                "active": ""
+                            },
+                            {
+                                "label": "滋补烩面",
+                                "to": "indexMenue?rid=2",
+                                "icon": "fa fa-spotify"
+                            }
+                        ]
+                    }
+                ],
+                "messages": {},
+                "style": {
+                    "color": "",
+                    "fontSize": "",
+                    "fontWeight": "normal"
+                },
+                "body": [
+                    {
+                        "type": "tpl",
+                        "tpl": "餐厅列表",
+                        "inline": false,
+                        "style": {}
+                    },
+                    {
+                        "type": "divider"
+                    },
+                    {
+                        "type": "crud",
+                        "api": "../restaurant/selectList",
+                        "columns": [
+                            {
+                                "name": "id",
+                                "label": "ID",
+                                "type": "text"
+                            },
+                            {
+                                "name": "name",
+                                "label": "名称",
+                                "type": "text"
+                            },
+                            {
+                                "name": "type",
+                                "label": "类型",
+                                "type": "text"
+                            },
+                            {
+                                "type": "text",
+                                "label": "距离(米)",
+                                "name": "distance"
+                            },
+                            {
+                                "type": "text",
+                                "label": "今日人数",
+                                "name": "personNum"
+                            },
+                            {
+                                "type": "text",
+                                "label": "今日总价",
+                                "name": "totalPrice"
+                            },
+                            {
+                                "type": "text",
+                                "label": "今日人均",
+                                "name": "averagePrice"
+                            },
+
+                            {
+                                "type": "text",
+                                "label": "今日菜单",
+                                "name": "menu",
+                                "width":"30%",
+                                "copyable": true
+                            },
+                            {
+                                "type": "operation",
+                                "label": "操作",
+                                "buttons": [
+                                    {
+                                        "label": "随机点菜",
+                                        "type": "button",
+                                        "actionType": "dialog",
+                                        "level": "link",
+                                        "dialog": {
+                                            "title": "随机点菜条件",
+                                            "body": {
+                                                "type": "form",
+                                                "api": "post:../restaurant/random",
+                                                "body": [
+                                                    {
+                                                        "name": "id",
+                                                        "label": "ID",
+                                                        "type": "static"
+                                                    },
+                                                    {
+                                                        "name": "meatNum",
+                                                        "label": "肉菜个数",
+                                                        "type": "native-number"
+                                                    },{
+                                                        "name": "eggNum",
+                                                        "label": "蛋菜个数",
+                                                        "type": "native-number"
+                                                    },
+                                                    {
+                                                        "name": "vegetableNum",
+                                                        "label": "素菜个数",
+                                                        "type": "native-number"
+                                                    },
+                                                    {
+                                                        "label": "汤数",
+                                                        "name": "soupNum",
+                                                        "type": "native-number"
+                                                    },
+                                                    {
+                                                        "label": "人数",
+                                                        "name": "personNum",
+                                                        "type": "native-number"
+                                                    },
+                                                    {
+                                                        "label": "价格上限",
+                                                        "name": "maxPrice",
+                                                        "type": "native-number"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "label": "编辑",
+                                        "type": "button",
+                                        "actionType": "dialog",
+                                        "level": "link",
+                                        "dialog": {
+                                            "title": "编辑",
+                                            "body": {
+                                                "type": "form",
+                                                "api": "post:../restaurant/update",
+                                                "body": [
+                                                    {
+                                                        "name": "id",
+                                                        "label": "ID",
+                                                        "type": "input-text"
+                                                    },
+                                                    {
+                                                        "name": "name",
+                                                        "label": "名称",
+                                                        "type": "input-text"
+                                                    },
+                                                    {
+                                                        "label": "距离(米）",
+                                                        "name": "distance",
+                                                        "type": "native-number"
+                                                    },
+                                                    {
+                                                        "label": "类型",
+                                                        "name": "type",
+                                                        "type": "input-text"
+                                                    },{
+                                                        "type": "native-number",
+                                                        "label": "今日人数",
+                                                        "name": "personNum"
+                                                    },
+                                                    {
+                                                        "type": "native-number",
+                                                        "label": "今日总价",
+                                                        "name": "totalPrice"
+                                                    },
+                                                    {
+                                                        "type": "native-number",
+                                                        "label": "今日人均",
+                                                        "name": "averagePrice"
+                                                    },{
+                                                        "type": "input-text",
+                                                        "label": "今日菜单",
+                                                        "name": "menu"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "label": "查看",
+                                        "type": "button",
+                                        "actionType": "dialog",
+                                        "level": "link",
+                                        "dialog": {
+                                            "title": "查看详情",
+                                            "body": {
+                                                "type": "form",
+                                                "api": "../restaurant/update",
+                                                "body": [
+                                                    {
+                                                        "name": "id",
+                                                        "label": "ID",
+                                                        "type": "static"
+                                                    },
+                                                    {
+                                                        "name": "name",
+                                                        "label": "名称",
+                                                        "type": "static"
+                                                    },
+                                                    {
+                                                        "name": "type",
+                                                        "label": "类型",
+                                                        "type": "static"
+                                                    },
+                                                    {
+                                                        "label": "距离(米)",
+                                                        "name": "distance",
+                                                        "type": "static"
+                                                    },{
+                                                        "type": "static",
+                                                        "label": "今日人数",
+                                                        "name": "personNum"
+                                                    },
+                                                    {
+                                                        "type": "static",
+                                                        "label": "今日总价",
+                                                        "name": "totalPrice"
+                                                    },
+                                                    {
+                                                        "type": "static",
+                                                        "label": "今日人均",
+                                                        "name": "averagePrice"
+                                                    },{
+                                                        "type": "static",
+                                                        "label": "今日菜单",
+                                                        "name": "menu"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "button",
+                                        "label": "删除",
+                                        "actionType": "ajax",
+                                        "level": "link",
+                                        "className": "text-danger",
+                                        "confirmText": "确定要删除？",
+                                        "api": "../restaurant/delete"
+                                    }
+                                ]
+                            }
+                        ],
+                        "bulkActions": [],
+                        "itemActions": [],
+                        "features": [
+                            "create",
+                            "filter",
+                            "view",
+                            "delete"
+                        ],
+                        "headerToolbar": [
+                            {
+                                "label": "新增",
+                                "type": "button",
+                                "actionType": "dialog",
+                                "level": "primary",
+                                "className": "restaurant",
+                                "dialog": {
+                                    "title": "新增",
+                                    "body": {
+                                        "type": "form",
+                                        "method": "post",
+                                        "api": "../restaurant/insert",
+                                        "data": {
+                                            "name": "${name}",
+                                            "type": "${type}",
+                                            "distance": "${distance}",
+                                            "menu": "${menu}"
+                                        },
+                                        "body": [
+                                            // {
+                                            //     "type": "input-text",
+                                            //     "name": "id",
+                                            //     "label": "ID"
+                                            // },
+                                            {
+                                                "type": "input-text",
+                                                "name": "name",
+                                                "label": "名称"
+                                            },
+                                            {
+                                                "type": "input-text",
+                                                "name": "type",
+                                                "label": "类型"
+                                            },
+                                            {
+                                                "type": "native-number",
+                                                "name": "distance",
+                                                "label": "距离(米)"
+                                            },{
+                                                "type": "text",
+                                                "label": "今日菜单",
+                                                "name": "menu",
+                                            }
+                                        ]
+                                    }
+                                },
+                                "size": "md"
+                            },
+                            "bulkActions",
+                            "pagination"
+                        ]
+                    }
+                ]
+            }
+        };
+        let amisScoped = amis.embed('#root', amisJSON);
+    })();
+</script>
+<!--博客宠物-->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+
+<!--博客宠物-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+<!-- 	<script src="https://cdn.jsdelivr.net/gh/lanedu/live2d-widget@v1.1/autoload.js"></script> -->
+<script src="https://cdn.jsdelivr.net/gh/lanedu/live2d-widget@master/v3/autoload.js"></script>
+
+<script>
+    if (screen.width >= 100) {
+        Promise.all([
+            loadExternalResource(live2d_path + "waifu.css", "css"),
+            loadExternalResource(live2d_path + "live2d.min.js", "js"),
+            loadExternalResource(live2d_path + "waifu-tips.js", "js")
+        ]).then(() => {
+            initWidget({
+                waifuPath: live2d_path + "waifu-tips.json",
+                apiPath: "https://live2d.fghrsh.net/api/",
+                //cdnPath: "https://cdn.jsdelivr.net/gh/fghrsh/live2d_api/"
+            });
+        });
+    }
+</script>
+<!-- <script src="https://myhkw.cn/api/player/demo" id="myhk" key="demo" m="1"></script> -->
+<!--音乐播放器，如果不需要删除以下几行即可,id是网页版网易云歌单id -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+<meting-js id="368529707" server="netease" type="playlist" theme="#339981" fixed="true"
+           preload="auto" autoplay="true" loop="all" order="random" volume="0.3"></meting-js>
+
+</body>
+</html>

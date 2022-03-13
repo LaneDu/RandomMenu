@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.mapper.RestaurantMapper">
+
+    <select id="findById" resultType="com.galaxy.model.Restaurant">
+     	 select * from restaurant where id = #{id}
+    </select>
+
+    <update id="updateTodayMenu" parameterType="com.galaxy.model.Restaurant" >
+     	 update restaurant
+     	 set menu =#{menu}
+     	 ,totalPrice=${totalPrice}
+     	 ,averagePrice =#{averagePrice}
+     	 ,personNum =#{personNum}
+     	  where id = #{id}
+
+    </update>
+
+</mapper>
